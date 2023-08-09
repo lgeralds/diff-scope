@@ -1,4 +1,4 @@
-print('DIFF PICKER LOADING')
+-- print('DIFF PICKER LOADING')
 local pickers = require('telescope.pickers')
 local finders = require('telescope.finders')
 local conf = require('telescope.config').values
