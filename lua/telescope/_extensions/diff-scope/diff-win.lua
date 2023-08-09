@@ -71,6 +71,7 @@ function M:create_buf_view(content, placement)
     'signcolumn',
     'no'
   )
+  api.nvim_command('')
 
   return api.nvim_get_current_buf()
 end

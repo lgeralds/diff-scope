@@ -7,27 +7,35 @@ local action_state = require('telescope.actions.state')
 local entry_display = require('telescope.pickers.entry_display')
 -- local previewers = require('telescope.previewers')
 -- local utils = require('telescope.utils')
-
 local diff = require('telescope._extensions.diff-scope.list-scope')
--- local plat = require('telescope._extensions.diff-scope.plat')
 local tab = require('telescope._extensions.diff-scope.diff-win')
+local util = require('telescope._extensions.diff-scope.util-scope')
 local DiffScope = {}
+local brak = '  DONE\n'
+
 
 -- return function(opts)
 DiffScope.diff = function(opts)
   local list = {}
   -- print('DIFF PICKER RUNNING: ', vim.inspect(opts))
 
-  -- if true then
-  --   return
-  -- end
+  opts.path_a = util.fetch_path('Path A', opts.path_a)
+  print(brak)
+  opts.path_b = util.fetch_path('Path B', opts.path_b)
 
-  -- required: input widget - two paths
-  -- get one, get two, ask to edit either or submit or cancel
-  --
+  if not util.is_str_ok(opts.path_b) then
+    opts.path_b = opts.path_a
+    opts.path_a = vim.fn.getcwd()
+  end
 
-  -- local d = plat.cmdcomplete({})
-  -- print('D: ', vim.inspect(d))
+  if not util.is_str_ok(opts.path_a) then
+    opts.path_a = vim.fn.getcwd()
+  end
+
+  if not util.is_str_ok(opts.path_a) or not util.is_str_ok(opts.path_b) then
+    print('Please enter at least one path')
+    return
+  end
 
   list = diff.build_diff_list(
     opts.path_a,
