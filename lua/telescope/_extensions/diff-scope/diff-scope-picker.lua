@@ -102,6 +102,9 @@ DiffScope.diff = function(opts)
             if selection.type == 'file' then
               actions.close(prompt_bufnr)
               tab:create_diff_view(selection.path, selection.path_b)
+            else
+              print('Selection is not a file.')
+              print(' ')
             end
           end
         )

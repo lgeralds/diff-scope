@@ -9,11 +9,11 @@ function M:close_cur_tab()
   self.tab_buf[cur_tab] = {}
 
   for _, buf in ipairs(bufs) do
-    -- api.nvim_command("bd " .. buf)
     if api.nvim_buf_is_valid(buf) then
       api.nvim_buf_delete(buf, {})
     end
   end
+  api.nvim_command('tabclose')
 end
 
 function M:close_all_tab()
@@ -25,6 +25,7 @@ function M:close_all_tab()
       end
     end
   end
+  api.nvim_command('tabclose')
 end
 
 function M:bail()
