@@ -20,15 +20,10 @@ return telescope.register_extension {
     print('REGISTERING', vim.inspect(opts))
   end,
   exports = {
-    -- diff_scope = function(_)
-    --   print('EXPORTING')
-    --   -- diff_scope(opts)
-    -- end
     diff = function()
       diff_scope.diff(opts)
     end,
     close = diff_scope.close,
     close_all = diff_scope.close_all,
-
   },
 }
