@@ -27,10 +27,7 @@ end
 
 local function is_equal_file(mine_file, other_file)
   local mine_len = vim.fn.getfsize(mine_file)
-  -- 只判断文件类型 -- Only the file type is judged
-  -- if mine_len <= 0 then
-  --   return false
-  -- end
+
   if mine_len ~= vim.fn.getfsize(other_file) then
     return false
   end
@@ -54,12 +51,6 @@ local function is_equal_file(mine_file, other_file)
 
   return true
 end
-
--- local function diff_file(mine_file, other_file)
---   -- os.execute("c:\\temp\\program.exe")
---   -- io.popen (prog [, mode])
---   return false
--- end
 
 local function is_equal_dir(mine_dir, other_dir)
   if mine_dir == other_dir then
@@ -89,7 +80,6 @@ end
 
 local M = {}
 M.diff_dir = function(mine, others, is_rec)
-  -- print('CRAP')
   local mine_files = get_files(mine, is_rec)
   local other_files = get_files(others, is_rec)
   local diff_add = {}
@@ -117,10 +107,8 @@ M.diff_dir = function(mine, others, is_rec)
   table.sort(diff_add)
   table.sort(diff_change)
   table.sort(diff_delete)
+
   return { mine_root = mine, others_root = others, diff = { add = diff_add, change = diff_change, delete = diff_delete } }
 end
-
--- M.diff_scope = function(opts)
--- end
 
 return M

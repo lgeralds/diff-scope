@@ -1,7 +1,6 @@
 local diff = require('telescope._extensions.diff-scope.dir-scope')
 local u = require('telescope._extensions.diff-scope.util-scope')
 
-
 local m = {
   added = '+',
   deleted = '-',
@@ -32,7 +31,6 @@ m.build_diff_list = function(path_a, path_b, ignore)
 end
 
 m.build_sub_list = function(path_a, path_b, todo, ignore, trim_a, trim_b)
-  -- print(vim.inspect(todo))
   local list = {}
 
   for _, item in ipairs({
@@ -40,15 +38,12 @@ m.build_sub_list = function(path_a, path_b, todo, ignore, trim_a, trim_b)
     { todo.diff.delete, m.deleted },
     { todo.diff.change, m.changed }
   }) do
-    -- print('ITEM: ', vim.inspect(item))
-    -- print(vim.inspect(sign))
     for _, f in ipairs(item[1]) do
       -- print('F: ', vim.inspect(f))
       local path_a_f = path_a .. '/' .. f
       local path_b_f = path_b .. '/' .. f
       local typef = 'file'
 
-      -- print('PONE_F: ', vim.inspect(pone_f))
       if u.has_item(ignore, f) then
         goto continue
       end
