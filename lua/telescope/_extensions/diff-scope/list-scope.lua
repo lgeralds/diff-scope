@@ -1,7 +1,4 @@
--- DTHM = os.getenv('HOME') .. '/.config/lvim/projects/diff-scope/'
-
-local diff = require('telescope._extensions.diff-scope.diff-scope')
--- local diff = require('diff-scope')
+local diff = require('telescope._extensions.diff-scope.dir-scope')
 local u = require('telescope._extensions.diff-scope.util-scope')
 
 

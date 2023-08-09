@@ -13,7 +13,7 @@ if exists('s:is_load')
 endif
 let s:is_load = 1
 
-lua diffscope = require('diff-scope')
+" lua diffscope = require('diff-scope')
 
 hi DiffScopeBack guifg=#61afef
 hi DiffScopeChange guifg=#E5C07B

@@ -1,6 +1,6 @@
 local plat = require('telescope._extensions.diff-scope.plat')
 
-print('LOADING diff-scope.diff.lua')
+print('LOADING dir-scope.diff.lua')
 
 local function get_files(dir, is_rec)
   if not dir or #dir == 0 then
