@@ -27,6 +27,10 @@ function M:close_all_tab()
   end
 end
 
+function M:bail()
+  api.nvim_command("qall!")
+end
+
 function M:create_diff_view(mine, other)
   api.nvim_command("tabnew")
   -- local cur_tab = api.nvim_get_current_tabpage()

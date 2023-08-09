@@ -9,14 +9,14 @@ local entry_display = require('telescope.pickers.entry_display')
 -- local utils = require('telescope.utils')
 
 local diff = require('telescope._extensions.diff-scope.list-scope')
-local plat = require('telescope._extensions.diff-scope.plat')
+-- local plat = require('telescope._extensions.diff-scope.plat')
 local tab = require('telescope._extensions.diff-scope.diff-win')
 local DiffScope = {}
 
 -- return function(opts)
 DiffScope.diff = function(opts)
   local list = {}
-  print('DIFF PICKER RUNNING: ', vim.inspect(opts))
+  -- print('DIFF PICKER RUNNING: ', vim.inspect(opts))
 
   -- if true then
   --   return
@@ -26,8 +26,8 @@ DiffScope.diff = function(opts)
   -- get one, get two, ask to edit either or submit or cancel
   --
 
-  local d = plat.cmdcomplete({})
-  print('D: ', vim.inspect(d))
+  -- local d = plat.cmdcomplete({})
+  -- print('D: ', vim.inspect(d))
 
   list = diff.build_diff_list(
     opts.path_a,
@@ -48,26 +48,31 @@ DiffScope.diff = function(opts)
       },
     }
 
-    local icon = ''
+    local type_icon = ''
+    local type_color = 'TelescopeResultsOperator'
 
     if entry.type == 'dir' then
-      icon = ''
+      type_icon = ''
+      type_color = 'TelescopeResultsDiffUntracked'
     end
 
-    -- local path = entry.path
+    local status_color = 'TelescopeResultsConstant'
+    local status_icon = 'ﲋ'
 
-    -- if opts.transform_file_path then
-    --   path = opts.transform_file_path(path)
-    -- end
-    -- if entry.type == 'dir' then
-    --   return displayer {}
-    -- end
+    if entry.status == '-' then
+      status_color = 'TelescopeResultsDiffDelete'
+      status_icon = ''
+    end
+
+    if entry.status == '+' then
+      status_color = 'TelescopeResultsStruct'
+      status_icon = ''
+    end
 
     return displayer {
-      entry.status,
-      icon,
+      { status_icon, status_color },
+      { type_icon,   type_color },
       entry.ordinal,
-      -- utils.path_smart(entry.path), -- or path_tail
     }
   end
   pickers.new(
@@ -77,11 +82,10 @@ DiffScope.diff = function(opts)
       finder = finders.new_table {
         results = list,
         entry_maker = function(entry)
-          -- opts.preview_title = entry.ordinal
           return {
             value = entry,
             display = display,
-            ordinal = entry[1],
+            ordinal = entry[5] .. ' ' .. entry[1],
             path = entry[2],
             path_b = entry[3],
             type = entry[4],
@@ -93,10 +97,12 @@ DiffScope.diff = function(opts)
       attach_mappings = function(prompt_bufnr, _)
         actions.select_default:replace(
           function()
-            actions.close(prompt_bufnr)
             local selection = action_state.get_selected_entry()
-            print(vim.inspect(selection))
-            tab:create_diff_view(selection.path, selection.path_b)
+            -- print(vim.inspect(selection))
+            if selection.type == 'file' then
+              actions.close(prompt_bufnr)
+              tab:create_diff_view(selection.path, selection.path_b)
+            end
           end
         )
         return true
@@ -112,6 +118,10 @@ end
 
 DiffScope.close_all = function()
   tab:close_all_tab()
+end
+
+DiffScope.bail = function()
+  tab:bail()
 end
 
 return DiffScope
