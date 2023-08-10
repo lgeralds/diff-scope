@@ -64,30 +64,31 @@ DiffScope.diff = function(opts)
       },
     }
 
-    local type_icon = ''
+    local type_icon = opts.icons.file
     -- local type_color = 'TelescopeResultsOperator'
-    local type_color = '@field'
+    local type_color = opts.colors.file
 
     if entry.type == 'dir' then
-      type_icon = ''
+      type_icon = opts.icons.folder
       -- type_color = 'TelescopeResultsDiffUntracked'
-      type_color = '@comment'
+      type_color = opts.colors.folder
     end
 
     -- local status_color = 'TelescopeResultsConstant'
-    local status_color = '@attribute'
-    local status_icon = 'ﲋ'
+    local status_color = opts.colors.changed
+    -- local status_icon = 'ﲋ'
+    local status_icon = opts.icons.changed
 
     if entry.status == '-' then
       -- status_color = 'TelescopeResultsDiffDelete'
-      status_color = '@exception'
-      status_icon = ''
+      status_color = opts.colors.deleted
+      status_icon = opts.icons.deleted
     end
 
     if entry.status == '+' then
       -- status_color = 'TelescopeResultsStruct'
-      status_color = '@character'
-      status_icon = ''
+      status_color = opts.colors.added
+      status_icon = opts.icons.added
     end
 
     return displayer {
