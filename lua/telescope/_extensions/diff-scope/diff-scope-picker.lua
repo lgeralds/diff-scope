@@ -12,47 +12,51 @@ local tab = require('telescope._extensions.diff-scope.diff-win')
 local util = require('telescope._extensions.diff-scope.util-scope')
 local DiffScope = {}
 local brak = '  DONE\n'
+local list = {}
+local lopts = {}
 
 
--- return function(opts)
 DiffScope.diff = function(opts)
-  local list = {}
   -- print('DIFF PICKER RUNNING: ', vim.inspect(opts))
+  if #list == 0 then
+    if #lopts == 0 then
+      lopts = util.copy_table(opts)
+    end
+    lopts.path_a = util.fetch_path('Left  Path', lopts.path_a)
+    print(brak)
+    lopts.path_b = util.fetch_path('Right Path', lopts.path_b)
 
-  opts.path_a = util.fetch_path('Left  Path', opts.path_a)
-  print(brak)
-  opts.path_b = util.fetch_path('Right Path', opts.path_b)
+    if not util.is_str_ok(lopts.path_b) then
+      lopts.path_b = lopts.path_a
+      lopts.path_a = vim.fn.getcwd()
+    end
 
-  if not util.is_str_ok(opts.path_b) then
-    opts.path_b = opts.path_a
-    opts.path_a = vim.fn.getcwd()
+    if not util.is_str_ok(lopts.path_a) then
+      lopts.path_a = vim.fn.getcwd()
+    end
+
+    if not util.is_str_ok(lopts.path_a) or not util.is_str_ok(lopts.path_b) then
+      print('Please enter at least one path')
+      return
+    end
+
+    if lopts.path_a == lopts.path_b then
+      print('Paths cannot be same.')
+      return
+    end
+
+    print('Left Path: ', lopts.path_a)
+    print('Right Path: ', lopts.path_b)
   end
-
-  if not util.is_str_ok(opts.path_a) then
-    opts.path_a = vim.fn.getcwd()
-  end
-
-  if not util.is_str_ok(opts.path_a) or not util.is_str_ok(opts.path_b) then
-    print('Please enter at least one path')
-    return
-  end
-
-  if opts.path_a == opts.path_b then
-    print('Paths cannot be same.')
-    return
-  end
-
-  print('Left Path: ', opts.path_a)
-  print('Right Path: ', opts.path_b)
 
   list = diff.build_diff_list(
-    opts.path_a,
-    opts.path_b,
-    opts.ignore
+    lopts.path_a,
+    lopts.path_b,
+    lopts.ignore
   )
 
-  opts = opts or {}
-  opts.preview_title = 'Local File'
+  -- opts = opts or {}
+  lopts.preview_title = 'Local File'
 
   local display = function(entry)
     local displayer = entry_display.create {
@@ -65,30 +69,24 @@ DiffScope.diff = function(opts)
     }
 
     local type_icon = opts.icons.file
-    -- local type_color = 'TelescopeResultsOperator'
     local type_color = opts.colors.file
 
     if entry.type == 'dir' then
-      type_icon = opts.icons.folder
-      -- type_color = 'TelescopeResultsDiffUntracked'
-      type_color = opts.colors.folder
+      type_icon = lopts.icons.folder
+      type_color = lopts.colors.folder
     end
 
-    -- local status_color = 'TelescopeResultsConstant'
-    local status_color = opts.colors.changed
-    -- local status_icon = 'ﲋ'
-    local status_icon = opts.icons.changed
+    local status_color = lopts.colors.changed
+    local status_icon = lopts.icons.changed
 
     if entry.status == '-' then
-      -- status_color = 'TelescopeResultsDiffDelete'
-      status_color = opts.colors.deleted
-      status_icon = opts.icons.deleted
+      status_color = lopts.colors.deleted
+      status_icon = lopts.icons.deleted
     end
 
     if entry.status == '+' then
-      -- status_color = 'TelescopeResultsStruct'
-      status_color = opts.colors.added
-      status_icon = opts.icons.added
+      status_color = lopts.colors.added
+      status_icon = lopts.icons.added
     end
 
     return displayer {
@@ -98,7 +96,7 @@ DiffScope.diff = function(opts)
     }
   end
   pickers.new(
-    opts,
+    lopts,
     {
       prompt_title = 'Diffs',
       finder = finders.new_table {
@@ -115,7 +113,7 @@ DiffScope.diff = function(opts)
           }
         end
       },
-      sorter = conf.file_sorter(opts),
+      sorter = conf.file_sorter(lopts),
       attach_mappings = function(prompt_bufnr, _)
         actions.select_default:replace(
           function()
@@ -132,21 +130,35 @@ DiffScope.diff = function(opts)
         )
         return true
       end,
-      previewer = conf.qflist_previewer(opts),
+      previewer = conf.qflist_previewer(lopts),
     }
   ):find()
 end
 
 DiffScope.close = function()
-  tab:close_cur_tab()
+  if #list > 0 then
+    tab:close_cur_tab()
+  end
 end
 
 DiffScope.close_all = function()
-  tab:close_all_tab()
+  if #list > 0 then
+    tab:close_all_tab()
+  end
 end
 
 DiffScope.bail = function()
   tab:bail()
+end
+
+DiffScope.new = function()
+  if #lopts == 0 then
+    vim.api.nvim_command('Telescope diff-scope diff')
+    return
+  end
+  tab:close_all_tab()
+  list = {}
+  DiffScope.diff(lopts)
 end
 
 return DiffScope

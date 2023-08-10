@@ -6,10 +6,8 @@ end
 
 local DiffScope = require('telescope._extensions.diff-scope.diff-scope-picker')
 local opts = {
-  -- path_a = vim.fn.getcwd(),
-  path_a = [[/Users/lgeralds/Projects/t/ruby 3.2/r02/depot]],
-  -- path_b = vim.fn.getcwd(),
-  path_b = [[/Users/lgeralds/Projects/t/ruby 3.2/r02/code 2/rails7/depot_f]],
+  path_a = vim.fn.getcwd(),
+  path_b = vim.fn.getcwd(),
   ignore = { '.DS_Store', '.git', 'log', 'tmp', 'node_modules', '.Trash' },
   icons = {
     file = '',
@@ -38,5 +36,6 @@ return telescope.register_extension {
     close = DiffScope.close,
     close_all = DiffScope.close_all,
     bail = DiffScope.bail,
+    new = DiffScope.new,
   },
 }

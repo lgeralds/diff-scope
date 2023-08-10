@@ -36,7 +36,7 @@ function util.concat_tables(t1, t2)
   return t1
 end
 
-function util.testDepth(path)
+function util.test_depth(path)
   local pathseparator = package.config:sub(1, 1);
   local _, count = string.gsub(path, pathseparator, "")
 
@@ -79,6 +79,21 @@ function util.fetch_path(label, path)
   )
 
   return path
+end
+
+function util.copy_table(datatable, cache)
+  cache = cache or {}
+  local tblRes = {}
+  if type(datatable) == "table" then
+    if cache[datatable] then return cache[datatable] end
+    for k, v in pairs(datatable) do
+      tblRes[util.copy_table(k, cache)] = util.copy_table(v, cache)
+    end
+    cache[datatable] = tblRes
+  else
+    tblRes = datatable
+  end
+  return tblRes
 end
 
 return util
