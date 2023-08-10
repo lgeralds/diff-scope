@@ -53,10 +53,8 @@ function M:bail()
 end
 
 function M:create_diff_view(mine, other)
-  api.nvim_command("tabnew")
-  api.nvim_command("vs")
-  -- ts = api.nvim_tabpage_get_number(api.nvim_get_current_tabpage())
-  -- print('TS: ', vim.inspect(ts))
+  api.nvim_command('tabnew')
+  api.nvim_command('vsplit')
 
   self.tab_buf[api.nvim_get_current_tabpage()] = {
     self:create_buf_view(other, 'l'),
@@ -68,14 +66,13 @@ end
 
 function M:create_buf_view(content, placement)
   api.nvim_command('wincmd ' .. placement)
-  api.nvim_command('edit ' .. content)
+  api.nvim_command('visual ' .. content)
   api.nvim_command('diffthis')
   api.nvim_win_set_option(
     api.nvim_get_current_win(),
     'signcolumn',
     'no'
   )
-  api.nvim_command('')
 
   return api.nvim_get_current_buf()
 end
