@@ -44,25 +44,28 @@ function util.testDepth(path)
 end
 
 function util.is_str_ok(str)
+  if type(str) ~= 'string' then
+    return false
+  end
   return (string.len(string.gsub(str, '%s+', '')) > 0)
 end
 
 function util.fetch_path(label, path)
-  local edit = not util.is_str_ok(path)
+  -- local edit = not util.is_str_ok(path)
 
-  vim.ui.select({ 'ACCEPT', 'EDIT' }, {
-    prompt = label .. ', accept or edit? ' .. path,
-    format_item = function(item)
-      return '' .. item
-    end,
-  }, function(choice)
-    edit = (choice == 'EDIT')
-    -- print('EDIT: ', edit)
-  end)
+  -- vim.ui.select({ 'ACCEPT', 'EDIT' }, {
+  --   prompt = label .. ', accept or edit? ' .. path,
+  --   format_item = function(item)
+  --     return '' .. item
+  --   end,
+  -- }, function(choice)
+  --   edit = (choice == 'EDIT')
+  --   -- print('EDIT: ', edit)
+  -- end)
 
-  if not edit then
-    return path
-  end
+  -- if not edit then
+  --   return path
+  -- end
 
   vim.ui.input(
     {

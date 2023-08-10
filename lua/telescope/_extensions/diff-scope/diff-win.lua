@@ -37,8 +37,8 @@ function M:create_diff_view(mine, other)
   api.nvim_command("vs")
 
   self.tab_buf[api.nvim_get_current_tabpage()] = {
-    self:create_buf_view(other, 'h'),
-    self:create_buf_view(mine, 'l')
+    self:create_buf_view(other, 'l'),
+    self:create_buf_view(mine, 'h')
   }
 
   vim.diagnostic.config({ virtual_text = false, virtual_lines = false })

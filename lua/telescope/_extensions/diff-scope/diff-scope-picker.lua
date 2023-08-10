@@ -19,9 +19,9 @@ DiffScope.diff = function(opts)
   local list = {}
   -- print('DIFF PICKER RUNNING: ', vim.inspect(opts))
 
-  opts.path_a = util.fetch_path('Path A', opts.path_a)
+  opts.path_a = util.fetch_path('Left  Path', opts.path_a)
   print(brak)
-  opts.path_b = util.fetch_path('Path B', opts.path_b)
+  opts.path_b = util.fetch_path('Right Path', opts.path_b)
 
   if not util.is_str_ok(opts.path_b) then
     opts.path_b = opts.path_a
@@ -36,6 +36,14 @@ DiffScope.diff = function(opts)
     print('Please enter at least one path')
     return
   end
+
+  if opts.path_a == opts.path_b then
+    print('Paths cannot be same.')
+    return
+  end
+
+  print('Left Path: ', opts.path_a)
+  print('Right Path: ', opts.path_b)
 
   list = diff.build_diff_list(
     opts.path_a,
@@ -57,23 +65,28 @@ DiffScope.diff = function(opts)
     }
 
     local type_icon = ''
-    local type_color = 'TelescopeResultsOperator'
+    -- local type_color = 'TelescopeResultsOperator'
+    local type_color = '@field'
 
     if entry.type == 'dir' then
       type_icon = ''
-      type_color = 'TelescopeResultsDiffUntracked'
+      -- type_color = 'TelescopeResultsDiffUntracked'
+      type_color = '@comment'
     end
 
-    local status_color = 'TelescopeResultsConstant'
+    -- local status_color = 'TelescopeResultsConstant'
+    local status_color = '@attribute'
     local status_icon = 'ﲋ'
 
     if entry.status == '-' then
-      status_color = 'TelescopeResultsDiffDelete'
+      -- status_color = 'TelescopeResultsDiffDelete'
+      status_color = '@exception'
       status_icon = ''
     end
 
     if entry.status == '+' then
-      status_color = 'TelescopeResultsStruct'
+      -- status_color = 'TelescopeResultsStruct'
+      status_color = '@character'
       status_icon = ''
     end
 

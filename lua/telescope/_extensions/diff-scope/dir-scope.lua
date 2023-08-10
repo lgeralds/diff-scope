@@ -9,6 +9,9 @@ local function get_files(dir, is_rec)
 
   local rec = is_rec or false
 
+  if vim.fn.getftype(dir) ~= 'dir' then
+    return {}
+  end
   local files = vim.fn.readdir(dir)
   if not files or #files == 0 then
     return {}
