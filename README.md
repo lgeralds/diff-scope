@@ -5,12 +5,15 @@ diff-scope diffs two directories.
 ## Installation
 
 ```lua
-# However plugins work for the user...
+-- However plugins work for the user
+
+...
+
 { 'lgeralds/diff-scope' }
 
 ...
 
-# Activate the extension
+-- Activate the extension
 require('telescope').load_extension('diff-scope')
 ```
 ## Dependency
@@ -45,7 +48,7 @@ Right Path files in the right panel.
 
 Neovim's diff commands are available. Remeber to save changes before closing or quitting. 
 
-Recall,
+Recall
 ```bash
 :Telescope diff-scope diff
 ```
@@ -99,12 +102,14 @@ require('telescope').setup {
     path_a = vim.fn.getcwd(),
     path_b = vim.fn.getcwd(),
     ignore = { '.DS_Store', '.git', 'log', 'tmp', 'node_modules', '.Trash' },
+    -- Installed defaults use appropiate Nerd Font icons.
+    -- Use :Telescope glyphs to access icons
     icons = {
-      file = '',
-      folder = '',
-      added = '',
-      deleted = '',
-      changed = 'ﰣ',
+      file = 'f',
+      folder = 'd',
+      added = '+',
+      deleted = '-',
+      changed = '~',
     },
     -- Colors reference Neovim highlight names
     -- Use :Telescope highlights to access highlight names
