@@ -16,7 +16,7 @@ function M:close_cur_tab()
 
   for _, buf in ipairs(bufs) do
     if api.nvim_buf_is_valid(buf) then
-      api.nvim_buf_delete(buf, {})
+      api.nvim_buf_delete(buf, { force = true })
     end
   end
 
@@ -37,7 +37,7 @@ function M:close_all_tab()
     self.tab_buf[i] = {}
     for _, buf in ipairs(bufs) do
       if api.nvim_buf_is_valid(buf) then
-        api.nvim_buf_delete(buf, {})
+        api.nvim_buf_delete(buf, { force = true })
       end
     end
     if api.nvim_tabpage_is_valid(i) and api.nvim_tabpage_get_number(i) > 1 then
@@ -66,7 +66,8 @@ end
 
 function M:create_buf_view(content, placement)
   api.nvim_command('wincmd ' .. placement)
-  api.nvim_command('visual ' .. content)
+  api.nvim_command('visual ' .. content) -- editable
+  -- api.nvim_command('view ' .. content) -- read only
   api.nvim_command('diffthis')
   api.nvim_win_set_option(
     api.nvim_get_current_win(),
