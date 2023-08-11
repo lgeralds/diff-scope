@@ -7,17 +7,18 @@ diff-scope diffs two directories.
 { 'lgeralds/diff-scope' }
 ```
 
-```vim
+### Instruction
+```bash
 :Telescope diff-scope diff
 ```
 This will start a diff session. The user will need to supply two
 directory paths.
 
-```text
+```bash
 Left Path: /Users/path/to/the/files
 ```
 then
-```text
+```bash
 Right Path: /Users/path/to/the/other/files
 ```
 The picker displays matched files and directories and their status. Status is noted with symbols.
@@ -34,13 +35,13 @@ Right Path files in the right panel.
 Neovim's diff commands are available. Remeber to save changes before closing or quitting. 
 
 Recall,
-```vim
+```bash
 :Telescope diff-scope diff
 ```
 to pick again.
 
 Close the current diff tab.
-```vim
+```bash
 :Telescope diff-scope close
 ```
 Both tab buffers are editable. Any changes have to be explicitly
@@ -48,18 +49,18 @@ saved by the user before closing the tab. The tab will close without
 warning the user about unsaved content.
 
 Close all the diff tabs.
-```vim
+```bash
 :Telescope diff-scope close-all
 ```
 
 Close all the tabs and quit NeoVim.
-```vim
+```bash
 :Telescope diff-scope bail
 ```
 [closes all tabs and then Neovim using :qall!]
 
-Switch tabs as usual. Maybe using,
-```vim
+Switch tabs as usual. Maybe using
+```bash
 tabn
 ```
 and its sibling commands. [Telescope-tabs](https://github.com/LukasPietzschmann/telescope-tabs) 
@@ -69,14 +70,14 @@ Use the diff-scope commands for closing the tabs.
 Other methods might leave orphaned buffers.
 
 Start a new diff session with new directories.
-```vim
+```bash
 :Telescope diff-scope new
 ```
 
-Also, note,
-```vim
+Also, note
+```bash
 :Telescope resume
 ```
-relaunchs the previous Telescope session is the same state as exited.
+relaunchs the previous Telescope session in the same state as exited.
 
 diff-scope began as a fork of [dirdiff.nvim](https://github.com/cossonleo/dirdiff.nvim).
