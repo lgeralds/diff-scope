@@ -2,12 +2,23 @@
 
 diff-scope diffs two directories.
 
-### Installation
-```lua
-{ 'lgeralds/diff-scope' }
-```
+## Installation
 
-### Instruction
+```lua
+# However plugins work for the user...
+{ 'lgeralds/diff-scope' }
+
+...
+
+# Activate the extension
+require('telescope').load_extension('diff-scope')
+```
+## Dependency
+
+[telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
+
+## Instruction
+
 ```bash
 :Telescope diff-scope diff
 ```
@@ -79,5 +90,35 @@ Also, note
 :Telescope resume
 ```
 relaunchs the previous Telescope session in the same state as exited.
+
+## Configuration
+
+```lua
+require('telescope').setup {
+  extensions['diff-dir'] = {
+    path_a = vim.fn.getcwd(),
+    path_b = vim.fn.getcwd(),
+    ignore = { '.DS_Store', '.git', 'log', 'tmp', 'node_modules', '.Trash' },
+    icons = {
+      file = '',
+      folder = '',
+      added = '',
+      deleted = '',
+      changed = 'ﰣ',
+    },
+    -- Colors reference Neovim highlight names
+    -- Use :Telescope highlights to access highlight names
+    colors = {
+      file = '@field',
+      folder = '@comment',
+      added = '@character',
+      deleted = '@exception',
+      changed = '@attribute',
+    },
+  }
+}
+```
+
+
 
 diff-scope began as a fork of [dirdiff.nvim](https://github.com/cossonleo/dirdiff.nvim).
