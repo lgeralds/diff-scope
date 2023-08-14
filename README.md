@@ -110,6 +110,7 @@ require('telescope').setup {
       added = '+',
       deleted = '-',
       changed = '~',
+      unchanged = '=',
     },
     -- Colors reference Neovim highlight names
     -- Use :Telescope highlights to access highlight names
@@ -118,7 +119,8 @@ require('telescope').setup {
       folder = '@comment',
       added = '@character',
       deleted = '@exception',
-      changed = '@attribute',
+      changed = 'CmpItemKindEmoji',
+      unchanged = '@funcion',
     },
   }
 }

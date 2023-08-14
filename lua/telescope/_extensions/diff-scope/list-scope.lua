@@ -1,20 +1,22 @@
 local diff = require('telescope._extensions.diff-scope.dir-scope')
-local u = require('telescope._extensions.diff-scope.util-scope')
+local util = require('telescope._extensions.diff-scope.util-scope')
 
 local m = {
   added = '+',
   deleted = '-',
-  changed = '~'
+  changed = '~',
+  unchanged = '='
 }
 
-m.init = function(added, deleted, changed)
+m.init = function(added, deleted, changed, unchanged)
   m.added = added
   m.deleted = deleted
   m.changed = changed
+  m.unchanged = unchanged
 end
 
 m.build_diff_list = function(path_a, path_b, ignore)
-  if u.has_item(ignore, path_a) then
+  if util.has_item(ignore, path_a) then
     return {}
   end
 
@@ -34,9 +36,10 @@ m.build_sub_list = function(path_a, path_b, todo, ignore, trim_a, trim_b)
   local list = {}
 
   for _, item in ipairs({
-    { todo.diff.add,    m.added },
-    { todo.diff.delete, m.deleted },
-    { todo.diff.change, m.changed }
+    { todo.diff.add,      m.added },
+    { todo.diff.delete,   m.deleted },
+    { todo.diff.change,   m.changed },
+    { todo.diff.unchange, m.unchanged }
   }) do
     for _, f in ipairs(item[1]) do
       -- print('F: ', vim.inspect(f))
@@ -44,13 +47,13 @@ m.build_sub_list = function(path_a, path_b, todo, ignore, trim_a, trim_b)
       local path_b_f = path_b .. '/' .. f
       local typef = 'file'
 
-      if u.has_item(ignore, f) then
+      if util.has_item(ignore, f) then
         goto continue
       end
 
-      if u.is_dir(path_a_f) then
+      if util.is_dir(path_a_f) then
         local todo_f = diff.diff_dir(path_a_f, path_b_f, true)
-        u.concat_tables(
+        util.concat_tables(
           list,
           m.build_sub_list(
             path_a_f,

@@ -87,6 +87,7 @@ M.diff_dir = function(mine, others, is_rec)
   local other_files = get_files(others, is_rec)
   local diff_add = {}
   local diff_change = {}
+  local diff_unchange = {}
   local diff_delete = {}
   for file, ft in pairs(mine_files) do
     local other_ft = other_files[file]
@@ -100,6 +101,8 @@ M.diff_dir = function(mine, others, is_rec)
       end
     elseif not is_equal_file(plat.path_concat(mine, file), plat.path_concat(others, file)) then
       table.insert(diff_change, file)
+    else
+      table.insert(diff_unchange, file)
     end
   end
   for file, _ in pairs(other_files) do
@@ -109,9 +112,19 @@ M.diff_dir = function(mine, others, is_rec)
   end
   table.sort(diff_add)
   table.sort(diff_change)
+  table.sort(diff_unchange)
   table.sort(diff_delete)
 
-  return { mine_root = mine, others_root = others, diff = { add = diff_add, change = diff_change, delete = diff_delete } }
+  return {
+    mine_root = mine,
+    others_root = others,
+    diff = {
+      add = diff_add,
+      change = diff_change,
+      unchange = diff_unchange,
+      delete = diff_delete
+    }
+  }
 end
 
 return M

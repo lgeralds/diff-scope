@@ -76,8 +76,11 @@ DiffScope.diff = function(opts)
       type_color = lopts.colors.folder
     end
 
-    local status_color = lopts.colors.changed
-    local status_icon = lopts.icons.changed
+    local status_color = lopts.colors.unchanged
+    local status_icon = lopts.icons.unchanged
+
+    -- local status_color = lopts.colors.changed
+    -- local status_icon = lopts.icons.changed
 
     if entry.status == '-' then
       status_color = lopts.colors.deleted
@@ -87,6 +90,11 @@ DiffScope.diff = function(opts)
     if entry.status == '+' then
       status_color = lopts.colors.added
       status_icon = lopts.icons.added
+    end
+
+    if entry.status == '~' then
+      status_color = lopts.colors.changed
+      status_icon = lopts.icons.changed
     end
 
     return displayer {
@@ -152,10 +160,13 @@ DiffScope.bail = function()
 end
 
 DiffScope.new = function()
-  if #lopts == 0 then
+  print('NEW 00')
+  if #list == 0 then
+    print('NEW 01')
     vim.api.nvim_command('Telescope diff-scope diff')
     return
   end
+  print('NEW 02')
   tab:close_all_tab()
   list = {}
   DiffScope.diff(lopts)

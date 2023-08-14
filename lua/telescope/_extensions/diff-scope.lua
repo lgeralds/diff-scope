@@ -15,13 +15,15 @@ local opts = {
     added = '',
     deleted = '',
     changed = 'ﰣ',
+    unchanged = '',
   },
   colors = {
     file = '@field',
     folder = '@comment',
     added = '@character',
     deleted = '@exception',
-    changed = '@attribute',
+    changed = 'CmpItemKindEmoji',
+    unchanged = '@funcion',
   },
 }
 
@@ -37,5 +39,8 @@ return telescope.register_extension {
     close_all = DiffScope.close_all,
     bail = DiffScope.bail,
     new = DiffScope.new,
+    -- function()
+    --   print('HELLO PEOPLE!')
+    -- end,
   },
 }
