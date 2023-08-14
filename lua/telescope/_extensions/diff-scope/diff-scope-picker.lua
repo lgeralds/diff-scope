@@ -160,13 +160,10 @@ DiffScope.bail = function()
 end
 
 DiffScope.new = function()
-  print('NEW 00')
   if #list == 0 then
-    print('NEW 01')
     vim.api.nvim_command('Telescope diff-scope diff')
     return
   end
-  print('NEW 02')
   tab:close_all_tab()
   list = {}
   DiffScope.diff(lopts)
